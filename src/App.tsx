@@ -46,7 +46,7 @@ function App() {
 
   return (
     <div className="container">
-      <h1 className="text-center mb-4">AI Idea Recommender (화면만)</h1>
+      <h1 className="text-center mb-4">AI 아이디어 추천기</h1>
       <div className="card p-4 shadow-sm">
         <p className="text-center text-muted">
           현재는 UI 요소만 표시됩니다. 기능은 비활성화되어 있습니다.

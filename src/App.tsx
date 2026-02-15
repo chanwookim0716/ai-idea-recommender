@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import IdeaInput from './components/IdeaInput';
 import GenerateButton from './components/GenerateButton';
@@ -7,6 +7,8 @@ import LoadingSpinner from './components/LoadingSpinner';
 import IdeaDetailModal from './components/IdeaDetailModal'; // Import the new modal component
 import { generateIdeasFromAPI } from './services/api'; // Import the real API call
 import { getIdeaDetailsFromAPI } from './services/api'; // Will be created soon
+
+const LOCAL_STORAGE_LIKED_IDEAS_KEY = 'likedIdeas';
 
 function App() {
   const [topic, setTopic] = useState<string>('');
@@ -19,6 +21,17 @@ function App() {
   const [detailedIdeaData, setDetailedIdeaData] = useState<string[]>([]);
   const [isDetailLoading, setIsDetailLoading] = useState<boolean>(false);
   const [detailError, setDetailError] = useState<string | null>(null);
+
+  const [likedIdeas, setLikedIdeas] = useState<string[]>(() => {
+    // Initialize liked ideas from localStorage
+    const saved = localStorage.getItem(LOCAL_STORAGE_LIKED_IDEAS_KEY);
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  // Save liked ideas to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem(LOCAL_STORAGE_LIKED_IDEAS_KEY, JSON.stringify(likedIdeas));
+  }, [likedIdeas]);
 
   const handleTopicChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTopic(e.target.value);
@@ -37,7 +50,7 @@ function App() {
     try {
       const generatedIdeas = await generateIdeasFromAPI(topic);
       setIdeas(generatedIdeas);
-    } catch (err: any) { // Catch any type to properly handle error object
+    } catch (err: any) {
       setError(err.message || '아이디어 생성 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
       console.error(err);
     } finally {
@@ -53,7 +66,7 @@ function App() {
     setDetailError(null);
 
     try {
-      const details = await getIdeaDetailsFromAPI(idea); // Call the new API for details
+      const details = await getIdeaDetailsFromAPI(idea);
       setDetailedIdeaData(details);
     } catch (err: any) {
       setDetailError(err.message || '아이디어 세부 정보를 불러오는 중 오류가 발생했습니다.');
@@ -61,6 +74,18 @@ function App() {
     } finally {
       setIsDetailLoading(false);
     }
+  };
+
+  const handleToggleLike = (idea: string) => {
+    setLikedIdeas(prevLikedIdeas => {
+      if (prevLikedIdeas.includes(idea)) {
+        // If already liked, remove it
+        return prevLikedIdeas.filter(likedIdea => likedIdea !== idea);
+      } else {
+        // If not liked, add it
+        return [...prevLikedIdeas, idea];
+      }
+    });
   };
 
   const handleCloseDetailModal = () => {
@@ -94,7 +119,14 @@ function App() {
           </div>
         )}
 
-        {!isLoading && ideas.length > 0 && <IdeaList ideas={ideas} onIdeaClick={handleIdeaClick} />}
+        {!isLoading && ideas.length > 0 && (
+          <IdeaList
+            ideas={ideas}
+            onIdeaClick={handleIdeaClick}
+            likedIdeas={likedIdeas}
+            onToggleLike={handleToggleLike}
+          />
+        )}
         {!isLoading && ideas.length === 0 && !error && topic.trim() && (
             <p className="text-muted mt-3">아이디어를 생성하려면 버튼을 클릭하세요.</p>
         )}

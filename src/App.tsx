@@ -5,6 +5,7 @@ import GenerateButton from './components/GenerateButton';
 import IdeaList from './components/IdeaList';
 import LoadingSpinner from './components/LoadingSpinner';
 import IdeaDetailModal from './components/IdeaDetailModal'; // Import the new modal component
+import LikedIdeasList from './components/LikedIdeasList'; // Import the LikedIdeasList component
 import { generateIdeasFromAPI } from './services/api'; // Import the real API call
 import { getIdeaDetailsFromAPI } from './services/api'; // Will be created soon
 

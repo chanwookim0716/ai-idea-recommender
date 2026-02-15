@@ -3,13 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vanilla Website</title>
+    <title>AI Idea Recommender</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Hello, Vanilla!</h1>
-    <p>This is a basic vanilla HTML, CSS, and JavaScript website.</p>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">AI Idea Recommender</h1>
+        <div class="card p-4 shadow-sm">
+            <div class="mb-3">
+                <label for="topicInput" class="form-label">아이디어를 얻고 싶은 주제를 입력하세요:</label>
+                <input type="text" class="form-control" id="topicInput" placeholder="예: 새로운 앱, 마케팅 전략, 콘텐츠 아이디어">
+            </div>
+            <button type="button" class="btn btn-primary" id="generateIdeasBtn">아이디어 얻기</button>
 
+            <div id="loadingSpinner" class="text-center mt-3 d-none">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mt-2">아이디어를 생성 중입니다...</p>
+            </div>
+
+            <div id="ideasOutput" class="mt-4">
+                <!-- AI-generated ideas will be displayed here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS (bundle includes Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <script src="script.js"></script>
 </body>
 </html>

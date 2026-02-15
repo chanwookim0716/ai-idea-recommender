@@ -1,4 +1,7 @@
 // src/services/api.ts
+
+// Temporarily comment out mock ideas for real API integration
+/*
 const MOCK_IDEAS = [
     "새로운 모바일 앱 아이디어",
     "혁신적인 마케팅 캠페인 전략",
@@ -16,21 +19,25 @@ export const generateIdeasMock = (topic: string): Promise<string[]> => {
         }, 1500); // Simulate network delay
     });
 };
+*/
 
-// Placeholder for future real API integration
-// export const generateIdeasFromAPI = async (topic: string): Promise<string[]> => {
-//   // In a real scenario, this would call your backend proxy (e.g., Cloudflare Worker)
-//   // const response = await fetch('/api/generate-ideas', {
-//   //   method: 'POST',
-//   //   headers: {
-//   //     'Content-Type': 'application/json',
-//   //   },
-//   //   body: JSON.stringify({ topic }),
-//   // });
-//   // if (!response.ok) {
-//   //   throw new Error('Failed to fetch ideas from API');
-//   // }
-//   // const data = await response.json();
-//   // return data.ideas;
-//   return Promise.resolve([`Real AI idea for ${topic}`]);
-// };
+export const generateIdeasFromAPI = async (topic: string): Promise<string[]> => {
+  const response = await fetch('/api/ideas', { // Call the Cloudflare Pages Function endpoint
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ topic }),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({ error: 'Unknown API error' }));
+    throw new Error(errorData.error || `API error: ${response.statusText}`);
+  }
+
+  const data = await response.json();
+  if (!data.ideas || !Array.isArray(data.ideas)) {
+    throw new Error('Invalid response format from AI API');
+  }
+  return data.ideas;
+};

@@ -50,6 +50,7 @@ function App() {
     try {
       const generatedIdeas = await generateIdeasFromAPI(topic);
       setIdeas(generatedIdeas);
+      setTopic(''); // Clear input field after successful generation
     } catch (err: any) {
       setError(err.message || '아이디어 생성 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
       console.error(err);
@@ -130,6 +131,15 @@ function App() {
         {!isLoading && ideas.length === 0 && !error && topic.trim() && (
             <p className="text-muted mt-3">아이디어를 생성하려면 버튼을 클릭하세요.</p>
         )}
+      </div>
+
+      {/* Liked Ideas Section */}
+      <div className="card p-4 shadow-sm mt-5">
+        <LikedIdeasList
+          likedIdeas={likedIdeas}
+          onIdeaClick={handleIdeaClick}
+          onToggleLike={handleToggleLike}
+        />
       </div>
 
       <IdeaDetailModal

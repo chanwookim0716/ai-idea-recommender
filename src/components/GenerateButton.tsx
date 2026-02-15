@@ -1,4 +1,5 @@
 import React from 'react';
+import { Spinner } from 'react-bootstrap'; // Import Spinner
 
 interface GenerateButtonProps {
   onClick: () => void;
@@ -13,7 +14,21 @@ const GenerateButton: React.FC<GenerateButtonProps> = ({ onClick, disabled }) =>
       onClick={onClick}
       disabled={disabled}
     >
-      아이디어 얻기
+      {disabled ? (
+        <>
+          <Spinner
+            as="span"
+            animation="border"
+            size="sm"
+            role="status"
+            aria-hidden="true"
+            className="me-2"
+          />
+          <span>생성 중...</span>
+        </>
+      ) : (
+        '아이디어 얻기'
+      )}
     </button>
   );
 };

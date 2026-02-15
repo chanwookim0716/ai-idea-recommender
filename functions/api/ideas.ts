@@ -23,31 +23,6 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         'Authorization': `Bearer ${env.OPENAI_API_KEY}`, // Use secret here
       },
       body: JSON.stringify({
-// functions/api/ideas.ts
-interface Env {
-  OPENAI_API_KEY: string;
-}
-
-export const onRequestPost: PagesFunction<Env> = async (context) => {
-  const { request, env } = context;
-
-  try {
-    const { topic } = await request.json();
-
-    if (!topic) {
-      return new Response(JSON.stringify({ error: 'Topic is required' }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' },
-      });
-    }
-
-    const openaiResponse = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${env.OPENAI_API_KEY}`, // Use secret here
-      },
-      body: JSON.stringify({
         model: 'gpt-4o', // Using gpt-4o as a capable model. User asked for gpt-5-mini, which is not a current model.
         messages: [
           {

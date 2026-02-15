@@ -1,5 +1,13 @@
 // src/services/api.ts
 
+interface IdeasApiResponse {
+  ideas: string[];
+}
+
+interface IdeaDetailsApiResponse {
+  details: string[];
+}
+
 // Temporarily comment out mock ideas for real API integration
 /*
 const MOCK_IDEAS = [
@@ -35,7 +43,7 @@ export const generateIdeasFromAPI = async (topic: string): Promise<string[]> => 
     throw new Error(errorData.error || `API error: ${response.statusText}`);
   }
 
-  const data = await response.json();
+  const data: IdeasApiResponse = await response.json(); // Cast to IdeasApiResponse
   if (!data.ideas || !Array.isArray(data.ideas)) {
     throw new Error('Invalid response format from AI API');
   }
@@ -56,7 +64,7 @@ export const getIdeaDetailsFromAPI = async (idea: string): Promise<string[]> => 
     throw new Error(errorData.error || `API error: ${response.statusText}`);
   }
 
-  const data = await response.json();
+  const data: IdeaDetailsApiResponse = await response.json(); // Cast to IdeaDetailsApiResponse
   if (!data.details || !Array.isArray(data.details)) {
     throw new Error('Invalid response format from AI for idea details');
   }

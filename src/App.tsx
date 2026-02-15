@@ -19,6 +19,7 @@ const LOCAL_STORAGE_LIKED_IDEAS_KEY = 'likedIdeas';
 
 function App() {
   // Minor change to trigger a new deployment for env var check.
+  // Second attempt.
   const [topic, setTopic] = useState<string>('');
   const [ideas, setIdeas] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);

@@ -28,8 +28,8 @@
   <!-- "Idea" text -->
   <text x="65%" y="60%" text-anchor="middle" dominant-baseline="central" class="ai-text">Idea</text>
 
-  <!-- Re-added subtle abstract pattern: multiple circles with gradient, moved closer to center -->
-  <circle cx="30" cy="70" r="7" class="pattern-shape" opacity="0.3" />
-  <circle cx="70" cy="30" r="6" class="pattern-shape" opacity="0.6" />
+  <!-- Re-added subtle abstract pattern: multiple circles with gradient, moved slightly further from center -->
+  <circle cx="25" cy="75" r="7" class="pattern-shape" opacity="0.3" />
+  <circle cx="75" cy="25" r="6" class="pattern-shape" opacity="0.6" />
   
 </svg>

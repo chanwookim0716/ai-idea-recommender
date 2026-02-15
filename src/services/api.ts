@@ -41,3 +41,24 @@ export const generateIdeasFromAPI = async (topic: string): Promise<string[]> => 
   }
   return data.ideas;
 };
+
+export const getIdeaDetailsFromAPI = async (idea: string): Promise<string[]> => {
+  const response = await fetch('/api/idea-detail', { // Call the new Cloudflare Pages Function endpoint
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ idea }),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({ error: 'Unknown API error' }));
+    throw new Error(errorData.error || `API error: ${response.statusText}`);
+  }
+
+  const data = await response.json();
+  if (!data.details || !Array.isArray(data.details)) {
+    throw new Error('Invalid response format from AI for idea details');
+  }
+  return data.details;
+};

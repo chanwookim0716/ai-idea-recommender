@@ -4,13 +4,21 @@ import IdeaInput from './components/IdeaInput';
 import GenerateButton from './components/GenerateButton';
 import IdeaList from './components/IdeaList';
 import LoadingSpinner from './components/LoadingSpinner';
+import IdeaDetailModal from './components/IdeaDetailModal'; // Import the new modal component
 import { generateIdeasFromAPI } from './services/api'; // Import the real API call
+import { getIdeaDetailsFromAPI } from './services/api'; // Will be created soon
 
 function App() {
   const [topic, setTopic] = useState<string>('');
   const [ideas, setIdeas] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+
+  const [showDetailModal, setShowDetailModal] = useState<boolean>(false);
+  const [selectedIdea, setSelectedIdea] = useState<string>('');
+  const [detailedIdeaData, setDetailedIdeaData] = useState<string[]>([]);
+  const [isDetailLoading, setIsDetailLoading] = useState<boolean>(false);
+  const [detailError, setDetailError] = useState<string | null>(null);
 
   const handleTopicChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTopic(e.target.value);
@@ -37,6 +45,31 @@ function App() {
     }
   };
 
+  const handleIdeaClick = async (idea: string) => {
+    setSelectedIdea(idea);
+    setShowDetailModal(true);
+    setDetailedIdeaData([]);
+    setIsDetailLoading(true);
+    setDetailError(null);
+
+    try {
+      const details = await getIdeaDetailsFromAPI(idea); // Call the new API for details
+      setDetailedIdeaData(details);
+    } catch (err: any) {
+      setDetailError(err.message || '아이디어 세부 정보를 불러오는 중 오류가 발생했습니다.');
+      console.error(err);
+    } finally {
+      setIsDetailLoading(false);
+    }
+  };
+
+  const handleCloseDetailModal = () => {
+    setShowDetailModal(false);
+    setSelectedIdea('');
+    setDetailedIdeaData([]);
+    setDetailError(null);
+  };
+
   return (
     <div className="container">
       <h1 className="text-center mb-4">AI 아이디어 추천기</h1>
@@ -61,11 +94,20 @@ function App() {
           </div>
         )}
 
-        {!isLoading && ideas.length > 0 && <IdeaList ideas={ideas} />}
+        {!isLoading && ideas.length > 0 && <IdeaList ideas={ideas} onIdeaClick={handleIdeaClick} />}
         {!isLoading && ideas.length === 0 && !error && topic.trim() && (
             <p className="text-muted mt-3">아이디어를 생성하려면 버튼을 클릭하세요.</p>
         )}
       </div>
+
+      <IdeaDetailModal
+        show={showDetailModal}
+        onHide={handleCloseDetailModal}
+        ideaTitle={selectedIdea}
+        details={detailedIdeaData}
+        isLoading={isDetailLoading}
+        error={detailError}
+      />
     </div>
   );
 }

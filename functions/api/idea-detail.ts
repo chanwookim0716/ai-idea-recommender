@@ -3,11 +3,23 @@ interface Env {
   OPENAI_API_KEY: string;
 }
 
+interface RequestDetailBody {
+  idea: string;
+}
+
+interface OpenAICompletionResponse {
+  choices: {
+    message: {
+      content: string;
+    };
+  }[];
+}
+
 export const onRequestPost: PagesFunction<Env> = async (context) => {
   const { request, env } = context;
 
   try {
-    const { idea } = await request.json();
+    const { idea } = (await request.json()) as RequestDetailBody; // Type assertion here
 
     if (!idea) {
       return new Response(JSON.stringify({ error: 'Idea is required for details' }), {
@@ -68,7 +80,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       }
     }
 
-    const data = await openaiResponse.json();
+    const data = (await openaiResponse.json()) as OpenAICompletionResponse; // Type assertion here
     const fullResponseContent = data.choices[0].message.content;
 
     // Split into lines for display

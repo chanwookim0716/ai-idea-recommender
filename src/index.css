@@ -35,7 +35,7 @@ body {
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
-  background: linear-gradient(90deg, #007bff, #00d4ff); /* Blue to Light Blue Gradient */
+  background: linear-gradient(90deg, #87CEEB, #007bff, #6f42c1); /* Sky Blue -> Blue -> Purple */
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -44,10 +44,35 @@ h1 {
 }
 
 #app {
-  max-width: 1280px;
+  max-width: 90%; /* Default for mobile/smaller screens */
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+}
+
+/* Responsive adjustments for larger screens */
+@media (min-width: 768px) { /* Medium devices (tablets) */
+  #app {
+    max-width: 720px;
+  }
+}
+
+@media (min-width: 992px) { /* Large devices (desktops) */
+  #app {
+    max-width: 960px;
+  }
+}
+
+@media (min-width: 1200px) { /* Extra large devices (large desktops) */
+  #app {
+    max-width: 1140px;
+  }
+}
+
+@media (min-width: 1400px) { /* XXL devices */
+  #app {
+    max-width: 1320px;
+  }
 }
 
 .logo {

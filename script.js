@@ -1,3 +1,6 @@
+// Ensure this script file is correctly parsed and executed.
+console.log("script.js loaded successfully!");
+
 document.addEventListener("DOMContentLoaded", () => {
     const topicInput = document.getElementById("topicInput");
     const generateIdeasBtn = document.getElementById("generateIdeasBtn");

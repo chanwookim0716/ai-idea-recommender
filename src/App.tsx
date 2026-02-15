@@ -18,6 +18,7 @@ import { Button } from 'react-bootstrap'; // Needed for Logout Button
 const LOCAL_STORAGE_LIKED_IDEAS_KEY = 'likedIdeas';
 
 function App() {
+  // Minor change to trigger a new deployment for env var check.
   const [topic, setTopic] = useState<string>('');
   const [ideas, setIdeas] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);

@@ -11,6 +11,7 @@ import SignupButton from './components/SignupButton';
 import AuthForm from './components/AuthForm'; // Import AuthForm
 import { generateIdeasFromAPI } from './services/api';
 import { getIdeaDetailsFromAPI } from './services/api';
+import { useEffect, useState } from 'react';
 // import { onAuthStateChange, signOut } from './services/auth'; // Commented out for debugging
 // import { User } from '@supabase/supabase-js'; // Commented out for debugging
 
@@ -19,6 +20,7 @@ const LOCAL_STORAGE_LIKED_IDEAS_KEY = 'likedIdeas';
 function App() {
   // Minor change to trigger a new deployment for env var check.
   // Second attempt.
+  // Third attempt for debugging 'user is not defined' ReferenceError.
   const [topic, setTopic] = useState<string>('');
   const [ideas, setIdeas] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);

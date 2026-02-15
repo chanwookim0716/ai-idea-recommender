@@ -1,9 +1,9 @@
 import React from 'react';
 import './App.css';
-// import IdeaInput from './components/IdeaInput';
-// import GenerateButton from './components/GenerateButton';
-// import IdeaList from './components/IdeaList';
-// import LoadingSpinner from './components/LoadingSpinner';
+import IdeaInput from './components/IdeaInput';
+import GenerateButton from './components/GenerateButton';
+import IdeaList from './components/IdeaList';
+import LoadingSpinner from './components/LoadingSpinner';
 // import { generateIdeasMock } from './services/api';
 
 function App() {
@@ -37,35 +37,39 @@ function App() {
   //   }
   // };
 
+  // Placeholder data for display
+  const dummyIdeas = [
+    '새로운 앱 아이디어 (기능 비활성화됨)',
+    '마케팅 전략 (기능 비활성화됨)',
+    '콘텐츠 아이디어 (기능 비활성화됨)',
+  ];
+
   return (
     <div className="container">
       <h1 className="text-center mb-4">AI Idea Recommender (화면만)</h1>
       <div className="card p-4 shadow-sm">
-        <p className="text-center">
-          이것은 AI 아이디어 추천기의 기본적인 화면입니다. 
-          향후 여기에 아이디어 입력 필드와 추천 결과가 표시될 예정입니다.
+        <p className="text-center text-muted">
+          현재는 UI 요소만 표시됩니다. 기능은 비활성화되어 있습니다.
         </p>
-        {/*
+        
         <IdeaInput
-          value={topic}
-          onChange={handleTopicChange}
-          disabled={isLoading}
+          value="" // Dummy value
+          onChange={() => {}} // Dummy handler
+          placeholder="예: 새로운 앱, 마케팅 전략"
+          disabled={true} // Always disabled
         />
-        <GenerateButton onClick={generateIdeas} disabled={isLoading} />
+        <GenerateButton onClick={() => alert('기능이 비활성화되어 있습니다.')} disabled={true} />
 
-        <LoadingSpinner isLoading={isLoading} />
+        <LoadingSpinner isLoading={false} /> {/* Not loading */}
 
-        {error && (
+        {/* Error display placeholder */}
+        {false && (
           <div className="alert alert-danger mt-3" role="alert">
-            {error}
+            오류 메시지 (비활성화됨)
           </div>
         )}
 
-        {!isLoading && ideas.length > 0 && <IdeaList ideas={ideas} />}
-        {!isLoading && ideas.length === 0 && !error && topic.trim() && (
-            <p className="text-muted mt-3">아이디어를 생성하려면 버튼을 클릭하세요.</p>
-        )}
-        */}
+        <IdeaList ideas={dummyIdeas} />
       </div>
     </div>
   );

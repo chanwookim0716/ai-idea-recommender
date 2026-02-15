@@ -4,10 +4,16 @@ import IdeaInput from './components/IdeaInput';
 import GenerateButton from './components/GenerateButton';
 import IdeaList from './components/IdeaList';
 import LoadingSpinner from './components/LoadingSpinner';
-import IdeaDetailModal from './components/IdeaDetailModal'; // Import the new modal component
-import LikedIdeasList from './components/LikedIdeasList'; // Import the LikedIdeasList component
-import { generateIdeasFromAPI } from './services/api'; // Import the real API call
-import { getIdeaDetailsFromAPI } from './services/api'; // Will be created soon
+import IdeaDetailModal from './components/IdeaDetailModal';
+import LikedIdeasList from './components/LikedIdeasList';
+import LoginButton from './components/LoginButton';
+import SignupButton from './components/SignupButton';
+import AuthForm from './components/AuthForm'; // Import AuthForm
+import { generateIdeasFromAPI } from './services/api';
+import { getIdeaDetailsFromAPI } from './services/api';
+import { onAuthStateChange, signOut } from './services/auth';
+import { User } from '@supabase/supabase-js';
+import { Button } from 'react-bootstrap'; // Needed for Logout Button
 
 const LOCAL_STORAGE_LIKED_IDEAS_KEY = 'likedIdeas';
 
@@ -24,15 +30,27 @@ function App() {
   const [detailError, setDetailError] = useState<string | null>(null);
 
   const [likedIdeas, setLikedIdeas] = useState<string[]>(() => {
-    // Initialize liked ideas from localStorage
     const saved = localStorage.getItem(LOCAL_STORAGE_LIKED_IDEAS_KEY);
     return saved ? JSON.parse(saved) : [];
   });
 
-  // Save liked ideas to localStorage whenever it changes
+  const [user, setUser] = useState<User | null>(null);
+  const [showAuthModal, setShowAuthModal] = useState<boolean>(false);
+  const [isAuthLogin, setIsAuthLogin] = useState<boolean>(true);
+
   useEffect(() => {
     localStorage.setItem(LOCAL_STORAGE_LIKED_IDEAS_KEY, JSON.stringify(likedIdeas));
   }, [likedIdeas]);
+
+  useEffect(() => {
+    const { data: authListener } = onAuthStateChange((event, session) => {
+      setUser(session?.user || null);
+    });
+
+    return () => {
+      authListener?.subscription.unsubscribe();
+    };
+  }, []);
 
   const handleTopicChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTopic(e.target.value);
@@ -46,12 +64,12 @@ function App() {
 
     setIsLoading(true);
     setError(null);
-    setIdeas([]); // Clear previous ideas
+    setIdeas([]);
 
     try {
       const generatedIdeas = await generateIdeasFromAPI(topic);
       setIdeas(generatedIdeas);
-      setTopic(''); // Clear input field after successful generation
+      setTopic('');
     } catch (err: any) {
       setError(err.message || '아이디어 생성 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
       console.error(err);
@@ -81,10 +99,8 @@ function App() {
   const handleToggleLike = (idea: string) => {
     setLikedIdeas(prevLikedIdeas => {
       if (prevLikedIdeas.includes(idea)) {
-        // If already liked, remove it
         return prevLikedIdeas.filter(likedIdea => likedIdea !== idea);
       } else {
-        // If not liked, add it
         return [...prevLikedIdeas, idea];
       }
     });
@@ -97,14 +113,48 @@ function App() {
     setDetailError(null);
   };
 
+  const handleLogout = async () => {
+    try {
+      await signOut();
+      alert('로그아웃 되었습니다.');
+    } catch (err: any) {
+      alert(`로그아웃 실패: ${err.message}`);
+    }
+  };
+
+  const handleLoginClick = () => {
+    setIsAuthLogin(true);
+    setShowAuthModal(true);
+  };
+
+  const handleSignupClick = () => {
+    setIsAuthLogin(false);
+    setShowAuthModal(true);
+  };
+
+  const handleCloseAuthModal = () => {
+    setShowAuthModal(false);
+  };
+
   return (
     <div className="container">
-      <h1 className="text-center mb-4">AI 아이디어 추천기</h1>
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <h1 className="text-center mb-0">AI 아이디어 추천기</h1>
+        <div>
+          {user ? (
+            <div className="d-flex align-items-center">
+              <span className="me-2">환영합니다, {user.email || '사용자'}님!</span>
+              <Button variant="outline-secondary" onClick={handleLogout}>로그아웃</Button>
+            </div>
+          ) : (
+            <>
+              <LoginButton onClick={handleLoginClick} />
+              <SignupButton onClick={handleSignupClick} className="ms-2" />
+            </>
+          )}
+        </div>
+      </div>
       <div className="card p-4 shadow-sm">
-        {/* <p className="text-center text-muted">
-          현재는 UI 요소만 표시됩니다. 기능은 비활성화되어 있습니다.
-        </p> */}
-        
         <IdeaInput
           value={topic}
           onChange={handleTopicChange}
@@ -134,7 +184,6 @@ function App() {
         )}
       </div>
 
-      {/* Liked Ideas Section */}
       <div className="card p-4 shadow-sm mt-5">
         <LikedIdeasList
           likedIdeas={likedIdeas}
@@ -151,6 +200,8 @@ function App() {
         isLoading={isDetailLoading}
         error={detailError}
       />
+
+      <AuthForm show={showAuthModal} onHide={handleCloseAuthModal} isLoginMode={isAuthLogin} />
     </div>
   );
 }

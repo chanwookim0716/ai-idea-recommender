@@ -40,7 +40,7 @@ const IdeaDetailModal: React.FC<IdeaDetailModalProps> = ({
         {!isLoading && !error && details.length > 0 && (
           <div>
             {details.map((line, index) => (
-              <p key={index} className="mb-1">{line}</p>
+              <p key={index} className="mb-1 text-center">{line}</p>
             ))}
           </div>
         )}

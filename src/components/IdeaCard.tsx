@@ -21,7 +21,7 @@ const IdeaCard: React.FC<IdeaCardProps> = ({ idea, index, onClick, isLiked, onTo
       <div className="card-body d-flex justify-content-between align-items-center">
         <div>
           <h5 className="card-title">아이디어 #{index + 1}</h5>
-          <p className="card-text">{idea}</p>
+          <p className="card-text text-center">{idea}</p>
         </div>
         <div onClick={handleStarClick} style={{ cursor: 'pointer' }}>
           {isLiked ? (

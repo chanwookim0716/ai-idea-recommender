@@ -10,18 +10,8 @@ function App() {
         <Col className="text-center"> {/* Column for centered H1 */}
           <h1 className="mb-0">AI 아이디어 추천기</h1>
         </Col>
-        <Col xs="auto" className="text-end"> {/* Column for right-aligned buttons */}
-          {user ? (
-            <div className="d-flex align-items-center">
-              <span className="me-2">환영합니다, {user.email || '사용자'}님!</span>
-              <Button variant="outline-secondary" onClick={handleLogout}>로그아웃</Button>
-            </div>
-          ) : (
-            <>
-              <LoginButton onClick={handleLoginClick} />
-              <SignupButton onClick={handleSignupClick} className="ms-2" />
-            </>
-          )}
+        <Col xs="auto" className="text-end">
+          <div>Authentication Placeholder</div>
         </Col>
       </Row>
       <div className="card p-4 shadow-sm">

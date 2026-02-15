@@ -54,11 +54,11 @@ document.addEventListener("DOMContentLoaded", () => {
             const aiIdeas = await new Promise(resolve => {
                 setTimeout(() => {
                     const mockIdeas = [
-                        \`${topic}을 위한 혁신적인 마케팅 캠페인\`,
-                        \`${topic}을 활용한 새로운 모바일 앱 아이디어\`,
-                        \`${topic} 기반의 소셜 미디어 콘텐츠 전략\`,
-                        \`${topic} 테마의 교육용 게임 개발\`,
-                        \`${topic} 관련 커뮤니티 플랫폼 구축\`,
+                        `${topic}을 위한 혁신적인 마케팅 캠페인`,
+                        `${topic}을 활용한 새로운 모바일 앱 아이디어`,
+                        `${topic} 기반의 소셜 미디어 콘텐츠 전략`,
+                        `${topic} 테마의 교육용 게임 개발`,
+                        `${topic} 관련 커뮤니티 플랫폼 구축`,
                     ];
                     resolve(mockIdeas);
                 }, 2000); // Simulate 2-second API call
@@ -68,7 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         } catch (error) {
             console.error("아이디어 생성 중 오류 발생:", error);
-            ideasOutput.innerHTML = \`<div class="alert alert-danger" role="alert">아이디어 생성 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.</div>\`;
+            ideasOutput.innerHTML = `<div class="alert alert-danger" role="alert">아이디어 생성 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.</div>`;
         } finally {
             // Hide loading spinner and enable input/button
             loadingSpinner.classList.add("d-none");
@@ -79,19 +79,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function displayIdeas(ideas) {
         if (ideas.length === 0) {
-            ideasOutput.innerHTML = \`<p class="text-muted">생성된 아이디어가 없습니다.</p>\`;
+            ideasOutput.innerHTML = `<p class="text-muted">생성된 아이디어가 없습니다.</p>`;
             return;
         }
 
         ideas.forEach((idea, index) => {
             const ideaCard = document.createElement("div");
             ideaCard.classList.add("card", "idea-card", "mb-3"); // Bootstrap card classes
-            ideaCard.innerHTML = \`
+            ideaCard.innerHTML = `
                 <div class="card-body">
                     <h5 class="card-title">아이디어 #${index + 1}</h5>
                     <p class="card-text">${idea}</p>
                 </div>
-            \`;
+            `;
             ideasOutput.appendChild(ideaCard);
         });
     }

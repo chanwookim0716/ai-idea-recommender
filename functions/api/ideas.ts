@@ -25,7 +25,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       body: JSON.stringify({
         model: 'gpt-3.5-turbo', // Or 'gpt-4', etc.
         messages: [
-          { role: 'system', content: 'You are a creative idea generator. Provide 5 distinct, concise ideas related to the user's topic.' },
+          { role: 'system', content: "You are a creative idea generator. Provide 5 distinct, concise ideas related to the user's topic." },
           { role: 'user', content: `Generate 5 creative ideas for: ${topic}` },
         ],
         max_tokens: 200,

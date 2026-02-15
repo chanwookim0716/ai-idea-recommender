@@ -9,7 +9,7 @@
       .ai-text {
         font-family: 'Gowun Dodum', 'Noto Sans KR', sans-serif; /* Prioritize Gowun Dodum */
         font-weight: 700; /* Bolder for presence */
-        font-size: 32px; /* Adjusted size */
+        font-size: 28px; /* Reduced font size */
         fill: url(#gradient); /* Gradient on text */
       }
       .star-shape, .pattern-shape { /* Apply gradient to both star and circles */
@@ -28,8 +28,8 @@
   <!-- "Idea" text -->
   <text x="65%" y="60%" text-anchor="middle" dominant-baseline="central" class="ai-text">Idea</text>
 
-  <!-- Re-added subtle abstract pattern: multiple circles with gradient -->
-  <circle cx="15" cy="85" r="7" class="pattern-shape" opacity="0.3" />
-  <circle cx="90" cy="15" r="6" class="pattern-shape" opacity="0.6" />
+  <!-- Re-added subtle abstract pattern: multiple circles with gradient, moved closer to center -->
+  <circle cx="30" cy="70" r="7" class="pattern-shape" opacity="0.3" />
+  <circle cx="70" cy="30" r="6" class="pattern-shape" opacity="0.6" />
   
 </svg>

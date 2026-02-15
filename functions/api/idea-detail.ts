@@ -73,8 +73,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
     // Split into lines for display
     const details = fullResponseContent
-      .split('
-')
+      .split('\n')
       .filter((line: string) => line.trim() !== '')
       .map((line: string) => line.trim());
 

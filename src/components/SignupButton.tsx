@@ -4,6 +4,7 @@ import { Button } from 'react-bootstrap';
 interface SignupButtonProps {
   onClick: () => void;
   disabled?: boolean;
+  className?: string; // Allow passing className
 }
 
 const SignupButton: React.FC<SignupButtonProps> = ({ onClick, disabled }) => {

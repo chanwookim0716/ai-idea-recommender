@@ -5,10 +5,11 @@ import { signIn, signUp } from '../services/auth';
 interface AuthFormProps {
   show: boolean;
   onHide: () => void;
+  isLoginMode: boolean; // New prop
 }
 
-const AuthForm: React.FC<AuthFormProps> = ({ show, onHide }) => {
-  const [isLogin, setIsLogin] = useState(true);
+const AuthForm: React.FC<AuthFormProps> = ({ show, onHide, isLoginMode: initialIsLoginMode }) => {
+  const [isLogin, setIsLogin] = useState(initialIsLoginMode); // Initialize based on prop
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);

@@ -153,23 +153,25 @@ function App() {
       <div style={{ position: 'fixed', top: '10px', right: '10px', zIndex: 1000 }} className="d-flex gap-2">
         {user ? (
           <div
-            className="d-flex align-items-center gap-2"
+            className="d-flex flex-column align-items-center" // Changed to column layout, centered horizontally
             onMouseEnter={() => setIsHoveringProfile(true)}
             onMouseLeave={() => setIsHoveringProfile(false)}
-            style={{ position: 'relative' }} // Needed for absolute positioning of logout button if desired
+            style={{ position: 'relative' }}
           >
-            {user.user_metadata?.avatar_url && (
-              <img
-                src={user.user_metadata.avatar_url}
-                alt="User Avatar"
-                style={{ width: '32px', height: '32px', borderRadius: '50%' }}
-              />
-            )}
-            <span className="align-self-center text-muted">
-              {user.email || user.user_metadata?.nickname || '환영합니다!'}
-            </span>
+            <div className="d-flex align-items-center gap-2"> {/* New div for avatar and name */}
+              {user.user_metadata?.avatar_url && (
+                <img
+                  src={user.user_metadata.avatar_url}
+                  alt="User Avatar"
+                  style={{ width: '32px', height: '32px', borderRadius: '50%' }}
+                />
+              )}
+              <span className="text-muted"> {/* Removed align-self-center */}
+                {user.email || user.user_metadata?.nickname || '환영합니다!'}
+              </span>
+            </div>
             {isHoveringProfile && (
-              <Button variant="outline-danger" onClick={handleLogout} size="sm" className="ms-2">
+              <Button variant="outline-danger" onClick={handleLogout} size="sm" className="mt-1"> {/* Changed ms-2 to mt-1 for margin-top */}
                 로그아웃
               </Button>
             )}

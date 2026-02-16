@@ -3,7 +3,7 @@ import { Modal, Button, Form, Alert, Spinner } from 'react-bootstrap';
 import { signIn, signUp } from '../services/auth';
 import { supabase } from '../services/supabase'; // Import supabase client
 import { FaGoogle } from 'react-icons/fa'; // Import Google icon
-import { RiKakaoTalkFill } from 'react-icons/ri'; // Import Kakao icon
+
 
 interface AuthFormProps {
   show: boolean;
@@ -57,20 +57,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ show, onHide, isLoginMode: initialI
     }
   };
 
-  const handleKakaoLogin = async () => {
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'kakao',
-      options: {
-        redirectTo: window.location.origin, // Redirects back to your app's origin after auth
-        scopes: 'profile_nickname,profile_image', // Explicitly request only nickname and profile image
-      },
-    });
-    if (error) {
-      console.error('Error signing in with Kakao:', error.message);
-      setMessage('Kakao 로그인 실패: ' + error.message);
-      setMessageType('danger');
-    }
-  };
+
 
   return (
     <Modal show={show} onHide={onHide} centered>
@@ -114,9 +101,6 @@ const AuthForm: React.FC<AuthFormProps> = ({ show, onHide, isLoginMode: initialI
           <div className="text-center text-muted">또는</div>
           <Button variant="outline-dark" onClick={handleGoogleLogin} disabled={loading} className="d-flex align-items-center justify-content-center" style={{ borderColor: '#DB4437', color: '#DB4437' }}>
             <FaGoogle className="me-2" /> Google로 로그인
-          </Button>
-          <Button variant="outline-warning" onClick={handleKakaoLogin} disabled={loading} className="d-flex align-items-center justify-content-center" style={{ backgroundColor: '#FEE500', borderColor: '#FEE500', color: '#3C1E1E' }}>
-            <RiKakaoTalkFill className="me-2" /> Kakao로 로그인
           </Button>
         </div>
       </Modal.Body>

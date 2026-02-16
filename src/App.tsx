@@ -146,18 +146,17 @@ function App() {
   };
 
   return (
-    <Container> {/* Use Bootstrap Container for proper layout */}
-      <Row className="mb-4 align-items-center"> {/* Use Row for horizontal layout */}
-        <Col className="text-center"> {/* Column for centered H1 */}
+    <Container style={{ position: 'relative' }}>
+      <Row className="mb-4 align-items-center">
+        <Col className="text-center">
           <h1 className="mb-0">AI 아이디어 추천기</h1>
         </Col>
-        <Col xs="auto" className="text-end">
-          <div className="d-flex gap-2">
-            <LoginButton onClick={handleLoginClick} />
-            <SignupButton onClick={handleSignupClick} />
-          </div>
-        </Col>
       </Row>
+
+      <div style={{ position: 'absolute', top: '10px', right: '10px', zIndex: 1000 }} className="d-flex gap-2">
+        <LoginButton onClick={handleLoginClick} />
+        <SignupButton onClick={handleSignupClick} />
+      </div>
       <div className="card p-4 shadow-sm">
         <IdeaInput
           value={topic}

@@ -22,7 +22,7 @@
 .signup-button-custom.btn-primary:hover,
 .signup-button-custom.btn-primary:active,
 .signup-button-custom.btn-primary:focus {
-  background-color: #6495ED; /* A slightly darker or different shade of blue for hover */
-  border-color: #6495ED;
-  color: #FFFFFF;
+  background-color: transparent;
+  color: #87CEEB; /* Sky blue text on hover */
+  border-color: #87CEEB;
 }

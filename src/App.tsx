@@ -153,8 +153,6 @@ function App() {
 
   return (
     <>
-      </div>
-
       <Container>
         <Row className="mb-4 align-items-center">
           <Col className="text-center">

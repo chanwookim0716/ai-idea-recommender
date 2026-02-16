@@ -6,8 +6,7 @@ import IdeaList from './components/IdeaList';
 import LoadingSpinner from './components/LoadingSpinner';
 import IdeaDetailModal from './components/IdeaDetailModal';
 import LikedIdeasList from './components/LikedIdeasList';
-import LoginButton from './components/LoginButton';
-import SignupButton from './components/SignupButton';
+
 import AuthForm from './components/AuthForm'; // Import AuthForm
 import { generateIdeasFromAPI } from './services/api';
 import { getIdeaDetailsFromAPI } from './services/api';
@@ -136,10 +135,7 @@ function App() {
     setShowAuthModal(true);
   };
 
-  const handleSignupClick = () => {
-    setIsAuthLogin(false);
-    setShowAuthModal(true);
-  };
+
 
   const handleCloseAuthModal = () => {
     setShowAuthModal(false);
@@ -147,9 +143,10 @@ function App() {
 
   return (
     <>
-      <div style={{ position: 'fixed', top: '10px', right: '10px', zIndex: 1000 }} className="d-flex gap-2">
-        <LoginButton onClick={handleLoginClick} />
-        <SignupButton onClick={handleSignupClick} />
+      <div style={{ position: 'fixed', top: '10px', right: '10px', zIndex: 1000 }}>
+        <Button variant="primary" onClick={handleLoginClick} style={{ backgroundColor: '#87CEEB', borderColor: '#87CEEB' }}>
+          로그인/회원가입
+        </Button>
       </div>
 
       <Container>

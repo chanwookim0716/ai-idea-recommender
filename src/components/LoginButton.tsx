@@ -8,7 +8,7 @@ interface LoginButtonProps {
 
 const LoginButton: React.FC<LoginButtonProps> = ({ onClick, disabled }) => {
   return (
-    <Button variant="outline-primary" onClick={onClick} disabled={disabled} style={{ borderColor: '#87CEEB', color: '#87CEEB' }}>
+    <Button variant="outline-primary" onClick={onClick} disabled={disabled} className="login-button-custom">
       로그인
     </Button>
   );

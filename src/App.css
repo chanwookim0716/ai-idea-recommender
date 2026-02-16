@@ -1,25 +1,28 @@
-#root {
-  max-width: 1280px;
-  padding: 2rem;
+.login-button-custom.btn-outline-primary {
+  border-color: #87CEEB;
+  color: #87CEEB;
+  transition: all 0.2s ease-in-out;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop_shadow(0 0 2em #61dafbac);
+.login-button-custom.btn-outline-primary:hover,
+.login-button-custom.btn-outline-primary:active,
+.login-button-custom.btn-outline-primary:focus {
+  background-color: #87CEEB;
+  color: #FFFFFF; /* White text on hover */
+  border-color: #87CEEB;
 }
 
-.card {
-  padding: 2em;
+/* Ensure Signup button also has consistent hover if needed, or if it changes variant */
+.signup-button-custom.btn-primary {
+  background-color: #87CEEB;
+  border-color: #87CEEB;
+  transition: all 0.2s ease-in-out;
 }
 
-.read-the-docs {
-  color: #888;
+.signup-button-custom.btn-primary:hover,
+.signup-button-custom.btn-primary:active,
+.signup-button-custom.btn-primary:focus {
+  background-color: #6495ED; /* A slightly darker or different shade of blue for hover */
+  border-color: #6495ED;
+  color: #FFFFFF;
 }

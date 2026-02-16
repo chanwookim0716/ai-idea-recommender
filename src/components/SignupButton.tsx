@@ -9,7 +9,7 @@ interface SignupButtonProps {
 
 const SignupButton: React.FC<SignupButtonProps> = ({ onClick, disabled }) => {
   return (
-    <Button variant="primary" onClick={onClick} disabled={disabled} style={{ backgroundColor: '#87CEEB', borderColor: '#87CEEB' }}>
+    <Button variant="primary" onClick={onClick} disabled={disabled} className="signup-button-custom">
       회원가입
     </Button>
   );

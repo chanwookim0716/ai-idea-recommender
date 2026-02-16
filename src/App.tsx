@@ -153,6 +153,11 @@ function App() {
 
   return (
     <>
+      <div style={{ position: 'fixed', top: '10px', right: '10px', zIndex: 1000 }} className="d-flex gap-2">
+        <LoginButton onClick={handleLoginClick} />
+        <SignupButton onClick={handleSignupClick} />
+      </div>
+
       <Container>
         <Row className="mb-4 align-items-center">
           <Col className="text-center">

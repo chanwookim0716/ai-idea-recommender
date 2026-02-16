@@ -126,6 +126,8 @@ function App() {
     }
   };
 
+  const [isHoveringProfile, setIsHoveringProfile] = useState<boolean>(false);
+
   const handleLoginClick = () => {
     setIsAuthLogin(true);
     setShowAuthModal(true);
@@ -150,14 +152,28 @@ function App() {
     <>
       <div style={{ position: 'fixed', top: '10px', right: '10px', zIndex: 1000 }} className="d-flex gap-2">
         {user ? (
-          <>
-            <span className="align-self-center text-muted me-2">
+          <div
+            className="d-flex align-items-center gap-2"
+            onMouseEnter={() => setIsHoveringProfile(true)}
+            onMouseLeave={() => setIsHoveringProfile(false)}
+            style={{ position: 'relative' }} // Needed for absolute positioning of logout button if desired
+          >
+            {user.user_metadata?.avatar_url && (
+              <img
+                src={user.user_metadata.avatar_url}
+                alt="User Avatar"
+                style={{ width: '32px', height: '32px', borderRadius: '50%' }}
+              />
+            )}
+            <span className="align-self-center text-muted">
               {user.email || user.user_metadata?.nickname || '환영합니다!'}
             </span>
-            <Button variant="outline-danger" onClick={handleLogout}>
-              로그아웃
-            </Button>
-          </>
+            {isHoveringProfile && (
+              <Button variant="outline-danger" onClick={handleLogout} size="sm" className="ms-2">
+                로그아웃
+              </Button>
+            )}
+          </div>
         ) : (
           <>
             <LoginButton onClick={handleLoginClick} />

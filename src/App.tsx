@@ -146,17 +146,18 @@ function App() {
   };
 
   return (
-    <Container style={{ position: 'relative' }}>
-      <Row className="mb-4 align-items-center">
-        <Col className="text-center">
-          <h1 className="mb-0">AI 아이디어 추천기</h1>
-        </Col>
-      </Row>
-
-      <div style={{ position: 'absolute', top: '10px', right: '10px', zIndex: 1000 }} className="d-flex gap-2">
+    <>
+      <div style={{ position: 'fixed', top: '10px', right: '10px', zIndex: 1000 }} className="d-flex gap-2">
         <LoginButton onClick={handleLoginClick} />
         <SignupButton onClick={handleSignupClick} />
       </div>
+
+      <Container>
+        <Row className="mb-4 align-items-center">
+          <Col className="text-center">
+            <h1 className="mb-0">AI 아이디어 추천기</h1>
+          </Col>
+        </Row>
       <div className="card p-4 shadow-sm">
         <IdeaInput
           value={topic}

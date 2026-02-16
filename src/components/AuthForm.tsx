@@ -9,7 +9,7 @@ interface AuthFormProps {
 }
 
 const AuthForm: React.FC<AuthFormProps> = ({ show, onHide, isLoginMode: initialIsLoginMode }) => {
-  const [isLogin, setIsLogin] = useState(initialIsLoginMode); // Initialize based on prop
+  const isLogin = initialIsLoginMode; // Mode is now fixed by prop
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -76,9 +76,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ show, onHide, isLoginMode: initialI
             {loading ? <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" className="me-2" /> : null}
             {isLogin ? '로그인' : '회원가입'}
           </Button>
-          <Button variant="link" onClick={() => setIsLogin(!isLogin)} disabled={loading}>
-            {isLogin ? '회원가입' : '로그인'}
-          </Button>
+
         </Form>
       </Modal.Body>
     </Modal>

@@ -158,55 +158,56 @@ function App() {
             <h1 className="mb-0">AI 아이디어 추천기</h1>
           </Col>
         </Row>
-      <div className="card p-4 shadow-sm">
-        <IdeaInput
-          value={topic}
-          onChange={handleTopicChange}
-          placeholder="예: 새로운 앱, 마케팅 전략"
-          disabled={isLoading}
-        />
-        <GenerateButton onClick={generateIdeas} disabled={isLoading} />
+        <div className="card p-4 shadow-sm">
+          <IdeaInput
+            value={topic}
+            onChange={handleTopicChange}
+            placeholder="예: 새로운 앱, 마케팅 전략"
+            disabled={isLoading}
+          />
+          <GenerateButton onClick={generateIdeas} disabled={isLoading} />
 
-        <LoadingSpinner isLoading={isLoading} />
+          <LoadingSpinner isLoading={isLoading} />
 
-        {error && (
-          <div className="alert alert-danger mt-3" role="alert">
-            {error}
-          </div>
-        )}
+          {error && (
+            <div className="alert alert-danger mt-3" role="alert">
+              {error}
+            </div>
+          )}
 
-        {!isLoading && ideas.length > 0 && (
-          <IdeaList
-            ideas={ideas}
-            onIdeaClick={handleIdeaClick}
+          {!isLoading && ideas.length > 0 && (
+            <IdeaList
+              ideas={ideas}
+              onIdeaClick={handleIdeaClick}
+              likedIdeas={likedIdeas}
+              onToggleLike={handleToggleLike}
+            />
+          )}
+          {!isLoading && ideas.length === 0 && !error && topic.trim() && (
+              <p className="text-muted mt-3">아이디어를 생성하려면 버튼을 클릭하세요.</p>
+          )}
+        </div>
+
+        <div className="card p-4 shadow-sm mt-5">
+          <LikedIdeasList
             likedIdeas={likedIdeas}
+            onIdeaClick={handleIdeaClick}
             onToggleLike={handleToggleLike}
           />
-        )}
-        {!isLoading && ideas.length === 0 && !error && topic.trim() && (
-            <p className="text-muted mt-3">아이디어를 생성하려면 버튼을 클릭하세요.</p>
-        )}
-      </div>
+        </div>
 
-      <div className="card p-4 shadow-sm mt-5">
-        <LikedIdeasList
-          likedIdeas={likedIdeas}
-          onIdeaClick={handleIdeaClick}
-          onToggleLike={handleToggleLike}
+        <IdeaDetailModal
+          show={showDetailModal}
+          onHide={handleCloseDetailModal}
+          ideaTitle={selectedIdea}
+          details={detailedIdeaData}
+          isLoading={isDetailLoading}
+          error={detailError}
         />
-      </div>
 
-      <IdeaDetailModal
-        show={showDetailModal}
-        onHide={handleCloseDetailModal}
-        ideaTitle={selectedIdea}
-        details={detailedIdeaData}
-        isLoading={isDetailLoading}
-        error={detailError}
-      />
-
-      <AuthForm show={showAuthModal} onHide={handleCloseAuthModal} isLoginMode={isAuthLogin} />
-    </Container>
+        <AuthForm show={showAuthModal} onHide={handleCloseAuthModal} isLoginMode={isAuthLogin} />
+      </Container>
+    </>
   );
 }
 

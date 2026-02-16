@@ -12,8 +12,8 @@ import AuthForm from './components/AuthForm'; // Import AuthForm
 import { generateIdeasFromAPI } from './services/api';
 import { getIdeaDetailsFromAPI } from './services/api';
 import { useEffect, useState } from 'react';
-// import { onAuthStateChange, signOut } from './services/auth'; // Commented out for debugging
-// import { User } from '@supabase/supabase-js'; // Commented out for debugging
+import { onAuthStateChange, signOut } from './services/auth';
+import { User } from '@supabase/supabase-js';
 
 const LOCAL_STORAGE_LIKED_IDEAS_KEY = 'likedIdeas';
 
@@ -37,7 +37,7 @@ function App() {
     return saved ? JSON.parse(saved) : [];
   });
 
-  // const [user, setUser] = useState<User | null>(null); // Commented out for debugging
+  const [user, setUser] = useState<User | null>(null);
   const [showAuthModal, setShowAuthModal] = useState<boolean>(false);
   const [isAuthLogin, setIsAuthLogin] = useState<boolean>(true);
 
@@ -45,8 +45,6 @@ function App() {
     localStorage.setItem(LOCAL_STORAGE_LIKED_IDEAS_KEY, JSON.stringify(likedIdeas));
   }, [likedIdeas]);
 
-  // Commented out for debugging
-  /*
   useEffect(() => {
     const { data: authListener } = onAuthStateChange((event, session) => {
       setUser(session?.user || null);
@@ -56,7 +54,6 @@ function App() {
       authListener?.subscription.unsubscribe();
     };
   }, []);
-  */
 
   const handleTopicChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTopic(e.target.value);
@@ -119,17 +116,15 @@ function App() {
     setDetailError(null);
   };
 
-  // Commented out for debugging
-  /*
   const handleLogout = async () => {
     try {
       await signOut();
       alert('로그아웃 되었습니다.');
+      setUser(null); // Clear user state on logout
     } catch (err: any) {
       alert(`로그아웃 실패: ${err.message}`);
     }
   };
-  */
 
   const handleLoginClick = () => {
     setIsAuthLogin(true);
@@ -154,8 +149,21 @@ function App() {
   return (
     <>
       <div style={{ position: 'fixed', top: '10px', right: '10px', zIndex: 1000 }} className="d-flex gap-2">
-        <LoginButton onClick={handleLoginClick} />
-        <SignupButton onClick={handleSignupClick} />
+        {user ? (
+          <>
+            <span className="align-self-center text-muted me-2">
+              {user.email || user.user_metadata?.nickname || '환영합니다!'}
+            </span>
+            <Button variant="outline-danger" onClick={handleLogout}>
+              로그아웃
+            </Button>
+          </>
+        ) : (
+          <>
+            <LoginButton onClick={handleLoginClick} />
+            <SignupButton onClick={handleSignupClick} />
+          </>
+        )}
       </div>
 
       <Container>

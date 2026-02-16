@@ -11,6 +11,7 @@ import SignupButton from './components/SignupButton';
 import AuthForm from './components/AuthForm'; // Import AuthForm
 import { generateIdeasFromAPI } from './services/api';
 import { getIdeaDetailsFromAPI } from './services/api';
+import { supabase } from './services/supabase'; // Import supabase client
 import { useEffect, useState } from 'react';
 // import { onAuthStateChange, signOut } from './services/auth'; // Commented out for debugging
 // import { User } from '@supabase/supabase-js'; // Commented out for debugging
@@ -147,11 +148,28 @@ function App() {
     setShowAuthModal(false);
   };
 
+  const handleGoogleLogin = async () => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: window.location.origin, // Redirects back to your app's origin after auth
+      },
+    });
+    if (error) {
+      console.error('Error signing in with Google:', error.message);
+      alert('Google 로그인 실패: ' + error.message);
+    }
+    // Supabase automatically handles redirect after successful OAuth
+  };
+
   return (
     <>
       <div style={{ position: 'fixed', top: '10px', right: '10px', zIndex: 1000 }} className="d-flex gap-2">
         <LoginButton onClick={handleLoginClick} />
         <SignupButton onClick={handleSignupClick} />
+        <Button variant="outline-primary" onClick={handleGoogleLogin} className="login-button-custom" style={{borderColor: '#DB4437', color: '#DB4437'}}>
+          Google 로그인
+        </Button>
       </div>
 
       <Container>

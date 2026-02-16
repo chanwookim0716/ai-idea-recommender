@@ -152,7 +152,10 @@ function App() {
           <h1 className="mb-0">AI 아이디어 추천기</h1>
         </Col>
         <Col xs="auto" className="text-end">
-          <div>Authentication Placeholder</div>
+          <div className="d-flex gap-2">
+            <LoginButton onClick={handleLoginClick} />
+            <SignupButton onClick={handleSignupClick} />
+          </div>
         </Col>
       </Row>
       <div className="card p-4 shadow-sm">

@@ -62,6 +62,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ show, onHide, isLoginMode: initialI
       provider: 'kakao',
       options: {
         redirectTo: window.location.origin, // Redirects back to your app's origin after auth
+        scopes: 'profile_nickname,profile_image', // Explicitly request only nickname and profile image
       },
     });
     if (error) {

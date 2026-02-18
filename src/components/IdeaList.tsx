@@ -5,7 +5,7 @@ interface IdeaListProps {
   ideas: string[];
   onIdeaClick: (idea: string) => void;
   likedIdeas: string[]; // New prop
-  onToggleLike: (idea: string) => void; // New prop
+  onToggleLike?: (idea: string) => void;
 }
 
 const IdeaList: React.FC<IdeaListProps> = React.memo(({ ideas, onIdeaClick, likedIdeas, onToggleLike }) => {

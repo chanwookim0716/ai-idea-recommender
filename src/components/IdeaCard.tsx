@@ -6,7 +6,7 @@ interface IdeaCardProps {
   index: number;
   onClick: (idea: string) => void;
   isLiked: boolean; // New prop: true if idea is liked
-  onToggleLike: (idea: string) => void; // New prop: handler to toggle like status
+  onToggleLike?: (idea: string) => void;
 }
 
 const IdeaCard: React.FC<IdeaCardProps> = React.memo(({ idea, index, onClick, isLiked, onToggleLike }) => {
@@ -14,7 +14,9 @@ const IdeaCard: React.FC<IdeaCardProps> = React.memo(({ idea, index, onClick, is
   // Prevent card click when star is clicked
   const handleStarClick = (e: React.MouseEvent) => {
     e.stopPropagation(); // Stop event propagation to the card
-    onToggleLike(idea);
+    if (onToggleLike) { // Check if onToggleLike is defined
+      onToggleLike(idea);
+    }
   };
 
   return (
@@ -24,13 +26,15 @@ const IdeaCard: React.FC<IdeaCardProps> = React.memo(({ idea, index, onClick, is
           <h5 className="card-title">아이디어 #{index + 1}</h5>
           <p className="card-text">{idea}</p>
         </div>
-        <div onClick={handleStarClick} style={{ cursor: 'pointer' }}>
-          {isLiked ? (
-            <FaStar color="#87CEEB" size={24} /> // Filled star, sky blue
-          ) : (
-            <FaRegStar color="#87CEEB" size={24} /> // Outlined star, sky blue
-          )}
-        </div>
+        {onToggleLike && ( // Only render star if onToggleLike prop is provided
+          <div onClick={handleStarClick} style={{ cursor: 'pointer' }}>
+            {isLiked ? (
+              <FaStar color="#87CEEB" size={24} /> // Filled star, sky blue
+            ) : (
+              <FaRegStar color="#87CEEB" size={24} /> // Outlined star, sky blue
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

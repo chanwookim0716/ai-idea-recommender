@@ -29,13 +29,13 @@ export const generateIdeasMock = (topic: string): Promise<string[]> => {
 };
 */
 
-export const generateIdeasFromAPI = async (topic: string): Promise<string[]> => {
+export const generateIdeasFromAPI = async (topic: string, numIdeas?: number): Promise<string[]> => {
   const response = await fetch('/api/ideas', { // Call the Cloudflare Pages Function endpoint
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ topic }),
+    body: JSON.stringify({ topic, numIdeas }),
   });
 
   if (!response.ok) {

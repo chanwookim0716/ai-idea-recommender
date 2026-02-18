@@ -6,12 +6,17 @@ interface LoginButtonProps {
   disabled?: boolean;
 }
 
-const LoginButton: React.FC<LoginButtonProps> = ({ onClick, disabled }) => {
+const LoginButton: React.FC<LoginButtonProps> = React.memo(({ onClick, disabled }) => {
+  LoginButton.displayName = 'LoginButton';
   return (
-    <Button variant="outline-primary" onClick={onClick} disabled={disabled} className="login-button-custom">
+    <Button
+      onClick={onClick}
+      disabled={disabled}
+      style={{ backgroundColor: '#87CEEB', borderColor: '#87CEEB', color: 'white' }}
+    >
       로그인
     </Button>
   );
-};
+});
 
 export default LoginButton;

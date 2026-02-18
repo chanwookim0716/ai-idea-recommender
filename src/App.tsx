@@ -58,8 +58,10 @@ function App() {
     setError(null);
     setIdeas([]);
 
+    const ideasToGenerate = user ? 15 : 5; // 5 ideas if not logged in, 15 if logged in
+
     try {
-      const generatedIdeas = await generateIdeasFromAPI(topic);
+      const generatedIdeas = await generateIdeasFromAPI(topic, ideasToGenerate);
       setIdeas(generatedIdeas);
       setTopic('');
     } catch (err: any) {
@@ -69,7 +71,6 @@ function App() {
       setIsLoading(false);
     }
   };
-
   const handleIdeaClick = useCallback(async (idea: string) => {
     setSelectedIdea(idea);
     setShowDetailModal(true);
@@ -122,6 +123,9 @@ function App() {
     user?.email || user?.user_metadata?.nickname || '환영합니다!', 
     [user]
   );
+  
+  const ideasToDisplay = user ? ideas : ideas.slice(0, 5); // Limit display for non-logged-in users
+  const canLike = !!user; // Only allow liking if logged in
 
   return (
     <>
@@ -183,23 +187,28 @@ function App() {
             </div>
           )}
 
-          {!isLoading && ideas.length > 0 && (
+          {!isLoading && ideasToDisplay.length > 0 && (
             <IdeaList
-              ideas={ideas}
+              ideas={ideasToDisplay}
               onIdeaClick={handleIdeaClick}
               likedIdeas={likedIdeas}
-              onToggleLike={toggleLike}
+              onToggleLike={canLike ? toggleLike : undefined} // Pass toggleLike only if logged in
             />
+          )}
+           {!isLoading && ideasToDisplay.length === 0 && !error && topic.trim() && (
+              <p className="text-muted mt-3 text-center">아이디어를 생성하려면 버튼을 클릭하세요.</p>
           )}
         </section>
 
-        <section className="card p-4 shadow-sm mt-5 mb-5">
-          <LikedIdeasList
-            likedIdeas={likedIdeas}
-            onIdeaClick={handleIdeaClick}
-            onToggleLike={toggleLike}
-          />
-        </section>
+        {canLike && ( // Only show liked ideas list if logged in
+          <section className="card p-4 shadow-sm mt-5 mb-5">
+            <LikedIdeasList
+              likedIdeas={likedIdeas}
+              onIdeaClick={handleIdeaClick}
+              onToggleLike={toggleLike}
+            />
+          </section>
+        )}
 
         <IdeaDetailModal
           show={showDetailModal}

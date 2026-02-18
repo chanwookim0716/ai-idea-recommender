@@ -7,13 +7,14 @@ interface Env {
 
 interface RequestIdeasBody {
   topic: string;
+  numIdeas?: number; // Optional parameter for number of ideas
 }
 
 export const onRequestPost: PagesFunction<Env> = async (context) => {
   const { request, env } = context;
 
   try {
-    const { topic } = (await request.json()) as RequestIdeasBody;
+    const { topic, numIdeas = 3 } = (await request.json()) as RequestIdeasBody; // Default to 3 if not provided
 
     if (!topic) {
       return new Response(JSON.stringify({ error: 'Topic is required' }), {
@@ -27,7 +28,8 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         role: 'system',
         content: `당신은 시장 조사 전문가입니다.
 사용자가 키워드를 입력하면 다음을 수행하세요:
-1. 해당 키워드와 관련된 틈새시장 3가지를 구체적으로 도출하세요.
+
+1. 해당 키워드와 관련된 틈새시장 ${numIdeas}가지를 구체적으로 도출하세요.
 2. 각 틈새시장마다 아래 항목을 작성하세요:
   • 구체적인 아이디어 1개
   • 이 시장이 유망한 이유 (수요/트렌드/문제점 기반)

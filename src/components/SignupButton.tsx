@@ -9,14 +9,14 @@ interface SignupButtonProps {
 const SignupButton: React.FC<SignupButtonProps> = React.memo(({ onClick, disabled }) => {
   SignupButton.displayName = 'SignupButton';
   const buttonStyle: React.CSSProperties = {
-    backgroundColor: '#87CEEB', // Sky blue background
-    borderColor: '#87CEEB', // Sky blue border
+    backgroundColor: '#4682B4', // Steel Blue background
+    borderColor: '#4682B4', // Steel Blue border
     color: 'white', // White text
   };
 
   const hoverStyle: React.CSSProperties = {
-    backgroundColor: '#6AA8E0', // Slightly darker sky blue on hover
-    borderColor: '#6AA8E0', // Slightly darker sky blue border on hover
+    backgroundColor: '#3970A1', // Slightly darker Steel Blue on hover
+    borderColor: '#3970A1', // Slightly darker Steel Blue border on hover
   };
 
   const [isHovered, setIsHovered] = React.useState(false);

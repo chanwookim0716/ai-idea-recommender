@@ -53,7 +53,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       });
     }
 
-    const ideas = parseAIResponse(data.choices[0].message.content);
+    const ideas = parseAIResponse(data.choices[0].message.content, numIdeas);
 
     return new Response(JSON.stringify({ ideas }), {
       status: 200,

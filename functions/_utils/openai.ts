@@ -39,12 +39,51 @@ export const createOpenAIResponse = async (
   }
 };
 
-export const parseAIResponse = (content: string) => {
-  return content
-    .split('\n')
-    .map((line: string) => line.trim())
-    .filter((line: string) => line !== '')
-    .map((line: string) => {
-      // Remove leading numbers, bullet points, and markdown bolding
-              return line.replace(/^(\d+\.|[*\-•])\s*/, '').replace(/\*\*/g, '');    });
+export const parseAIResponse = (content: string, numIdeas: number = 3) => {
+  const lines = content.split('\n').map(line => line.trim()).filter(line => line !== '');
+  const extractedIdeas: string[] = [];
+  
+  let currentIdea: string[] = [];
+  for (const line of lines) {
+    // Check if the line starts a new numbered idea (e.g., "1. 틈새시장", "2. 아이디어")
+    // or if it's a specific idea line (e.g., "• 구체적인 아이디어")
+    const isNewNicheStart = /^\d+\.\s*(.+)/.test(line); // e.g., "1. 해당 키워드..."
+    const isSpecificIdeaLine = /^\*\s*구체적인 아이디어\s*(.+)/.test(line) || /^•\s*구체적인 아이디어\s*(.+)/.test(line);
+
+
+    if (isNewNicheStart && currentIdea.length > 0) {
+      extractedIdeas.push(currentIdea.join(' '));
+      currentIdea = [];
+    }
+    
+    // Always add lines that are part of the current idea's description,
+    // or new niche market heading if it's the start of a new one.
+    // Clean markdown before adding.
+    const cleanedLine = line.replace(/^(\d+\.|[*-•])\s*/, '').replace(/\*\*/g, '');
+    if (isNewNicheStart || isSpecificIdeaLine || currentIdea.length > 0) {
+        currentIdea.push(cleanedLine);
+    }
+
+    if (extractedIdeas.length >= numIdeas) {
+        break; // Stop if we've extracted enough ideas
+    }
+  }
+
+  if (currentIdea.length > 0 && extractedIdeas.length < numIdeas) {
+    extractedIdeas.push(currentIdea.join(' '));
+  }
+
+  // Refine the extracted ideas to focus on just the 'specific idea' within each niche
+  const finalIdeas: string[] = [];
+  extractedIdeas.forEach(ideaBlock => {
+    const specificIdeaMatch = /(구체적인 아이디어\s*:\s*)(.+)/.exec(ideaBlock) || /(구체적인 아이디어\s*)(.+)/.exec(ideaBlock);
+    if (specificIdeaMatch && specificIdeaMatch[2]) {
+      finalIdeas.push(specificIdeaMatch[2].trim());
+    } else {
+        // Fallback if specific pattern not found, just take the first meaningful line or the whole block
+        finalIdeas.push(ideaBlock.split(' ').slice(0, 5).join(' ').trim() + '...'); // Take first few words
+    }
+  });
+
+  return finalIdeas.slice(0, numIdeas); // Ensure exact limit
 };

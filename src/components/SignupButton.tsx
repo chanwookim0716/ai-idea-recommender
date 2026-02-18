@@ -8,15 +8,18 @@ interface SignupButtonProps {
 
 const SignupButton: React.FC<SignupButtonProps> = React.memo(({ onClick, disabled }) => {
   SignupButton.displayName = 'SignupButton';
-  const buttonStyle: React.CSSProperties = {
+  // Default style (filled)
+  const defaultStyle: React.CSSProperties = {
     backgroundColor: '#4682B4', // Steel Blue background
     borderColor: '#4682B4', // Steel Blue border
     color: 'white', // White text
   };
 
+  // Hover style (border only)
   const hoverStyle: React.CSSProperties = {
-    backgroundColor: '#3970A1', // Slightly darker Steel Blue on hover
-    borderColor: '#3970A1', // Slightly darker Steel Blue border on hover
+    backgroundColor: 'transparent',
+    borderColor: '#4682B4', // Steel Blue border
+    color: '#4682B4', // Steel Blue text
   };
 
   const [isHovered, setIsHovered] = React.useState(false);
@@ -25,7 +28,7 @@ const SignupButton: React.FC<SignupButtonProps> = React.memo(({ onClick, disable
     <Button
       onClick={onClick}
       disabled={disabled}
-      style={{ ...buttonStyle, ...(isHovered ? hoverStyle : {}) }}
+      style={{ ...(isHovered ? hoverStyle : defaultStyle) }} // Apply hover style when hovered, otherwise default
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >

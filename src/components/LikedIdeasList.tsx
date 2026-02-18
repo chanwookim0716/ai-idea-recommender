@@ -7,11 +7,12 @@ interface LikedIdeasListProps {
   onToggleLike: (idea: string) => void;
 }
 
-const LikedIdeasList: React.FC<LikedIdeasListProps> = ({ likedIdeas, onIdeaClick, onToggleLike }) => {
+const LikedIdeasList: React.FC<LikedIdeasListProps> = React.memo(({ likedIdeas, onIdeaClick, onToggleLike }) => {
+  LikedIdeasList.displayName = 'LikedIdeasList';
   if (likedIdeas.length === 0) {
     return (
       <div className="text-center mt-4">
-        <p className="text-muted">아직 찜한 아이디어가 없습니다.</p>
+        <p className="text-muted">아직 찜한 아이디어가 없습니다. 마음에 드는 아이디어가 있다면 별 모양 아이콘을 눌러보세요!</p>
       </div>
     );
   }
@@ -31,6 +32,6 @@ const LikedIdeasList: React.FC<LikedIdeasListProps> = ({ likedIdeas, onIdeaClick
       ))}
     </div>
   );
-};
+});
 
-export default LikedIdeasList;
+export default React.memo(LikedIdeasList);

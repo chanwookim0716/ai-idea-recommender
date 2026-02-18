@@ -13,14 +13,11 @@ import { createClient } from '@supabase/supabase-js';
 //    VITE_SUPABASE_ANON_KEY="YOUR_SUPABASE_ANON_KEY"
 // 5. Ensure .env is in your .gitignore (which it already should be).
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-
-
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
 
 if (!supabaseUrl || !supabaseAnonKey) {
-  console.error('Supabase URL or Anon Key is missing from environment variables.');
-  // In a production app, you might want to throw an error or handle this more gracefully.
+  console.warn('Supabase URL or Anon Key is missing. Database features will not work.');
 }
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);

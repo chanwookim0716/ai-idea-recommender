@@ -9,7 +9,8 @@ interface IdeaCardProps {
   onToggleLike: (idea: string) => void; // New prop: handler to toggle like status
 }
 
-const IdeaCard: React.FC<IdeaCardProps> = ({ idea, index, onClick, isLiked, onToggleLike }) => {
+const IdeaCard: React.FC<IdeaCardProps> = React.memo(({ idea, index, onClick, isLiked, onToggleLike }) => {
+  IdeaCard.displayName = 'IdeaCard';
   // Prevent card click when star is clicked
   const handleStarClick = (e: React.MouseEvent) => {
     e.stopPropagation(); // Stop event propagation to the card
@@ -33,6 +34,6 @@ const IdeaCard: React.FC<IdeaCardProps> = ({ idea, index, onClick, isLiked, onTo
       </div>
     </div>
   );
-};
+});
 
-export default IdeaCard;
+export default React.memo(IdeaCard);

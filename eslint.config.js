@@ -6,6 +6,9 @@ import pluginReactRecommended from "eslint-plugin-react/configs/recommended.js";
 import pluginReactJsxRuntime from "eslint-plugin-react/configs/jsx-runtime.js";
 
 export default [
+  {
+    ignores: ["dist/", "node_modules/"],
+  },
   // Configuration for TypeScript files
   {
     files: ["**/*.{ts,tsx}"], // Only apply to TypeScript files
@@ -38,8 +41,10 @@ export default [
       ...tseslint.configs.recommended.rules,
       ...pluginReactRecommended.rules, // Use recommended rules from pluginReact
       ...pluginReactJsxRuntime.rules, // Add jsx-runtime specific rules
-      "react/react-in-jsx-scope": "off", // Ensure this is off
-      "@typescript-eslint/no-explicit-any": "off", // Keep off for now
+      "react/react-in-jsx-scope": "off",
+      "react/prop-types": "off", // Disable prop-types as we are using TypeScript
+      "react/display-name": "warn", // Warn for missing display names
+      "@typescript-eslint/no-explicit-any": "off",
       "no-unused-vars": "off", // Disable base JS rule when TS version is active
       "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
     },

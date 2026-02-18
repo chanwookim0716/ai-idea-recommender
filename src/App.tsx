@@ -1,4 +1,4 @@
-import { Button, Container, Row, Col } from 'react-bootstrap'; // Added Container, Row, Col
+import { Button, Container, Row, Col } from 'react-bootstrap';
 import './App.css';
 import IdeaInput from './components/IdeaInput';
 import GenerateButton from './components/GenerateButton';
@@ -8,19 +8,14 @@ import IdeaDetailModal from './components/IdeaDetailModal';
 import LikedIdeasList from './components/LikedIdeasList';
 import LoginButton from './components/LoginButton';
 import SignupButton from './components/SignupButton';
-import AuthForm from './components/AuthForm'; // Import AuthForm
-import { generateIdeasFromAPI } from './services/api';
-import { getIdeaDetailsFromAPI } from './services/api';
-import { useEffect, useState } from 'react';
+import AuthForm from './components/AuthForm';
+import { generateIdeasFromAPI, getIdeaDetailsFromAPI } from './services/api';
+import { useEffect, useState, useCallback, useMemo } from 'react';
 import { onAuthStateChange, signOut } from './services/auth';
 import { User } from '@supabase/supabase-js';
-
-const LOCAL_STORAGE_LIKED_IDEAS_KEY = 'likedIdeas';
+import { useLikedIdeas } from './hooks/useLikedIdeas';
 
 function App() {
-  // Minor change to trigger a new deployment for env var check.
-  // Second attempt.
-  // Third attempt for debugging 'user is not defined' ReferenceError.
   const [topic, setTopic] = useState<string>('');
   const [ideas, setIdeas] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -32,32 +27,26 @@ function App() {
   const [isDetailLoading, setIsDetailLoading] = useState<boolean>(false);
   const [detailError, setDetailError] = useState<string | null>(null);
 
-  const [likedIdeas, setLikedIdeas] = useState<string[]>(() => {
-    const saved = localStorage.getItem(LOCAL_STORAGE_LIKED_IDEAS_KEY);
-    return saved ? JSON.parse(saved) : [];
-  });
+  // Memoized cache for idea details
+  const detailsCache = useMemo(() => new Map<string, string[]>(), []);
+
+  const { likedIdeas, toggleLike } = useLikedIdeas();
 
   const [user, setUser] = useState<User | null>(null);
   const [showAuthModal, setShowAuthModal] = useState<boolean>(false);
   const [isAuthLogin, setIsAuthLogin] = useState<boolean>(true);
+  const [isHoveringProfile, setIsHoveringProfile] = useState<boolean>(false);
 
   useEffect(() => {
-    localStorage.setItem(LOCAL_STORAGE_LIKED_IDEAS_KEY, JSON.stringify(likedIdeas));
-  }, [likedIdeas]);
-
-  useEffect(() => {
-    const { data: authListener } = onAuthStateChange((event, session) => {
+    const { data: authListener } = onAuthStateChange((_event, session) => {
       setUser(session?.user || null);
     });
-
-    return () => {
-      authListener?.subscription.unsubscribe();
-    };
+    return () => authListener?.subscription.unsubscribe();
   }, []);
 
-  const handleTopicChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleTopicChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setTopic(e.target.value);
-  };
+  }, []);
 
   const generateIdeas = async () => {
     if (!topic.trim()) {
@@ -74,123 +63,108 @@ function App() {
       setIdeas(generatedIdeas);
       setTopic('');
     } catch (err: any) {
-      setError(err.message || '아이디어 생성 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+      setError(err.message || '아이디어 생성 중 오류가 발생했습니다.');
       console.error(err);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleIdeaClick = async (idea: string) => {
+  const handleIdeaClick = useCallback(async (idea: string) => {
     setSelectedIdea(idea);
     setShowDetailModal(true);
     setDetailedIdeaData([]);
     setIsDetailLoading(true);
     setDetailError(null);
 
+    // Check cache first
+    if (detailsCache.has(idea)) {
+      setDetailedIdeaData(detailsCache.get(idea)!);
+      setIsDetailLoading(false);
+      return;
+    }
+
     try {
       const details = await getIdeaDetailsFromAPI(idea);
+      detailsCache.set(idea, details); // Store in cache
       setDetailedIdeaData(details);
     } catch (err: any) {
-      setDetailError(err.message || '아이디어 세부 정보를 불러오는 중 오류가 발생했습니다.');
+      setDetailError(err.message || '세부 정보를 불러오는 중 오류가 발생했습니다.');
       console.error(err);
     } finally {
       setIsDetailLoading(false);
     }
-  };
+  }, [detailsCache]);
 
-  const handleToggleLike = (idea: string) => {
-    setLikedIdeas(prevLikedIdeas => {
-      if (prevLikedIdeas.includes(idea)) {
-        return prevLikedIdeas.filter(likedIdea => likedIdea !== idea);
-      } else {
-        return [...prevLikedIdeas, idea];
-      }
-    });
-  };
-
-  const handleCloseDetailModal = () => {
+  const handleCloseDetailModal = useCallback(() => {
     setShowDetailModal(false);
     setSelectedIdea('');
     setDetailedIdeaData([]);
     setDetailError(null);
-  };
+  }, []);
 
   const handleLogout = async () => {
     try {
       await signOut();
+      setUser(null);
       alert('로그아웃 되었습니다.');
-      setUser(null); // Clear user state on logout
     } catch (err: any) {
       alert(`로그아웃 실패: ${err.message}`);
     }
   };
 
-  const [isHoveringProfile, setIsHoveringProfile] = useState<boolean>(false);
-
-  const handleLoginClick = () => {
-    setIsAuthLogin(true);
+  const openAuthModal = useCallback((loginMode: boolean) => {
+    setIsAuthLogin(loginMode);
     setShowAuthModal(true);
-  };
+  }, []);
 
-  const handleSignupClick = () => {
-    setIsAuthLogin(false);
-    setShowAuthModal(true);
-  };
-
-
-
-  const handleCloseAuthModal = () => {
-    setShowAuthModal(false);
-  };
-
-
-
-
+  const userDisplayName = useMemo(() => 
+    user?.email || user?.user_metadata?.nickname || '환영합니다!', 
+    [user]
+  );
 
   return (
     <>
-      <div style={{ position: 'fixed', top: '10px', right: '10px', zIndex: 1000 }} className="d-flex gap-2">
+      <header style={{ position: 'fixed', top: '10px', right: '10px', zIndex: 1000 }} className="d-flex gap-2">
         {user ? (
           <div
-            className="d-flex flex-column align-items-center" // Changed to column layout, centered horizontally
+            className="d-flex flex-column align-items-center"
             onMouseEnter={() => setIsHoveringProfile(true)}
             onMouseLeave={() => setIsHoveringProfile(false)}
             style={{ position: 'relative' }}
           >
-            <div className="d-flex align-items-center gap-2"> {/* New div for avatar and name */}
+            <div className="d-flex align-items-center gap-2">
               {user.user_metadata?.avatar_url && (
                 <img
                   src={user.user_metadata.avatar_url}
-                  alt="User Avatar"
+                  alt="Avatar"
                   style={{ width: '32px', height: '32px', borderRadius: '50%' }}
                 />
               )}
-              <span className="text-muted"> {/* Removed align-self-center */}
-                {user.email || user.user_metadata?.nickname || '환영합니다!'}
-              </span>
+              <span className="text-muted">{userDisplayName}</span>
             </div>
             {isHoveringProfile && (
-              <Button variant="outline-danger" onClick={handleLogout} size="sm" className="mt-1"> {/* Changed ms-2 to mt-1 for margin-top */}
+              <Button variant="outline-danger" onClick={handleLogout} size="sm" className="mt-1">
                 로그아웃
               </Button>
             )}
           </div>
         ) : (
           <>
-            <LoginButton onClick={handleLoginClick} />
-            <SignupButton onClick={handleSignupClick} />
+            <LoginButton onClick={() => openAuthModal(true)} />
+            <SignupButton onClick={() => openAuthModal(false)} />
           </>
         )}
-      </div>
+      </header>
 
       <Container>
-        <Row className="mb-4 align-items-center">
+        <Row className="mb-4 mt-5">
           <Col className="text-center">
-            <h1 className="mb-0">AI 아이디어 추천기</h1>
+            <h1>AI 아이디어 추천기</h1>
           </Col>
         </Row>
-        <div className="card p-4 shadow-sm">
+        
+        <section className="card p-4 shadow-sm">
           <IdeaInput
             value={topic}
             onChange={handleTopicChange}
@@ -198,12 +172,14 @@ function App() {
             disabled={isLoading}
           />
           <GenerateButton onClick={generateIdeas} disabled={isLoading} />
-
           <LoadingSpinner isLoading={isLoading} />
+          {isLoading && <p className="text-center mt-2 text-muted">AI 아이디어를 생성 중입니다...</p>}
 
           {error && (
             <div className="alert alert-danger mt-3" role="alert">
-              {error}
+              {error.includes('네트워크')
+                ? '네트워크 연결에 문제가 있습니다. 인터넷 연결을 확인해 주세요.'
+                : '아이디어를 생성하는 도중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.'}
             </div>
           )}
 
@@ -212,21 +188,18 @@ function App() {
               ideas={ideas}
               onIdeaClick={handleIdeaClick}
               likedIdeas={likedIdeas}
-              onToggleLike={handleToggleLike}
+              onToggleLike={toggleLike}
             />
           )}
-          {!isLoading && ideas.length === 0 && !error && topic.trim() && (
-              <p className="text-muted mt-3">아이디어를 생성하려면 버튼을 클릭하세요.</p>
-          )}
-        </div>
+        </section>
 
-        <div className="card p-4 shadow-sm mt-5">
+        <section className="card p-4 shadow-sm mt-5 mb-5">
           <LikedIdeasList
             likedIdeas={likedIdeas}
             onIdeaClick={handleIdeaClick}
-            onToggleLike={handleToggleLike}
+            onToggleLike={toggleLike}
           />
-        </div>
+        </section>
 
         <IdeaDetailModal
           show={showDetailModal}
@@ -237,7 +210,11 @@ function App() {
           error={detailError}
         />
 
-        <AuthForm show={showAuthModal} onHide={handleCloseAuthModal} isLoginMode={isAuthLogin} />
+        <AuthForm 
+          show={showAuthModal} 
+          onHide={() => setShowAuthModal(false)} 
+          isLoginMode={isAuthLogin} 
+        />
       </Container>
     </>
   );

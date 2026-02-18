@@ -10,12 +10,12 @@ const LoginButton: React.FC<LoginButtonProps> = React.memo(({ onClick, disabled 
   LoginButton.displayName = 'LoginButton';
   const buttonStyle: React.CSSProperties = {
     backgroundColor: 'transparent',
-    borderColor: '#4682B4', // Steel Blue border
-    color: '#4682B4', // Steel Blue text
+    borderColor: '#4EA5F4', // New Sky Blue border
+    color: '#4EA5F4', // New Sky Blue text
   };
 
   const hoverStyle: React.CSSProperties = {
-    backgroundColor: '#4682B4', // Steel Blue background on hover
+    backgroundColor: '#4EA5F4', // New Sky Blue background on hover
     color: 'white', // White text on hover
   };
 

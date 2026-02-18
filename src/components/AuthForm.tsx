@@ -61,10 +61,10 @@ const AuthForm: React.FC<AuthFormProps> = ({ show, onHide, isLoginMode: initialI
 
   return (
     <Modal show={show} onHide={onHide} centered>
-      <Modal.Header closeButton>
+      <Modal.Header closeButton style={{ borderColor: '#6BB9FA', borderBottom: '1px solid #6BB9FA' }}>
         <Modal.Title>{isLogin ? '로그인' : '회원가입'}</Modal.Title>
       </Modal.Header>
-      <Modal.Body>
+      <Modal.Body style={{ borderColor: '#6BB9FA' }}>
         {message && <Alert variant={messageType}>{message}</Alert>}
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -91,7 +91,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ show, onHide, isLoginMode: initialI
             />
           </Form.Group>
 
-          <Button variant="primary" type="submit" disabled={loading} style={{ backgroundColor: '#87CEEB', borderColor: '#87CEEB' }}>
+          <Button variant="primary" type="submit" disabled={loading} style={{ backgroundColor: '#4EA5F4', borderColor: '#4EA5F4' }}>
             {loading ? <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" className="me-2" /> : null}
             {isLogin ? '로그인' : '회원가입'}
           </Button>
@@ -104,6 +104,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ show, onHide, isLoginMode: initialI
           </Button>
         </div>
       </Modal.Body>
+      <Modal.Footer style={{ borderColor: '#6BB9FA', borderTop: '1px solid #6BB9FA' }} />
     </Modal>
   );
 };

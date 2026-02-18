@@ -10,16 +10,16 @@ const SignupButton: React.FC<SignupButtonProps> = React.memo(({ onClick, disable
   SignupButton.displayName = 'SignupButton';
   // Default style (filled)
   const defaultStyle: React.CSSProperties = {
-    backgroundColor: '#4682B4', // Steel Blue background
-    borderColor: '#4682B4', // Steel Blue border
+    backgroundColor: '#4EA5F4', // New Sky Blue background
+    borderColor: '#4EA5F4', // New Sky Blue border
     color: 'white', // White text
   };
 
   // Hover style (border only)
   const hoverStyle: React.CSSProperties = {
     backgroundColor: 'transparent',
-    borderColor: '#4682B4', // Steel Blue border
-    color: '#4682B4', // Steel Blue text
+    borderColor: '#4EA5F4', // New Sky Blue border
+    color: '#4EA5F4', // New Sky Blue text
   };
 
   const [isHovered, setIsHovered] = React.useState(false);

@@ -168,7 +168,7 @@ function App() {
           </Col>
         </Row>
         
-        <section className="card p-4 shadow-sm">
+        <section className="card p-4 shadow-sm" style={{ borderColor: '#6BB9FA', borderWidth: '2px', borderStyle: 'solid' }}>
           <IdeaInput
             value={topic}
             onChange={handleTopicChange}
@@ -201,7 +201,7 @@ function App() {
         </section>
 
         {canLike && ( // Only show liked ideas list if logged in
-          <section className="card p-4 shadow-sm mt-5 mb-5">
+          <section className="card p-4 shadow-sm mt-5 mb-5" style={{ borderColor: '#6BB9FA', borderWidth: '2px', borderStyle: 'solid' }}>
             <LikedIdeasList
               likedIdeas={likedIdeas}
               onIdeaClick={handleIdeaClick}

@@ -129,6 +129,14 @@ function App() {
 
   return (
     <>
+      <div style={{ position: 'fixed', top: '15px', left: '15px', zIndex: 1000 }}>
+        <img 
+          src="/favicon.ico" 
+          alt="Favicon" 
+          style={{ width: '40px', height: '40px', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }} 
+        />
+      </div>
+
       <header style={{ position: 'fixed', top: '10px', right: '10px', zIndex: 1000 }} className="d-flex gap-2">
         {user ? (
           <div

@@ -129,11 +129,11 @@ function App() {
 
   return (
     <>
-      <div style={{ position: 'fixed', top: '15px', left: '15px', zIndex: 1000 }}>
+      <div style={{ position: 'fixed', top: '20px', left: '20px', zIndex: 1000 }}>
         <img 
           src="/favicon.ico" 
           alt="Favicon" 
-          style={{ width: '40px', height: '40px', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }} 
+          style={{ width: '60px', height: '60px', borderRadius: '12px', boxShadow: '0 4px 8px rgba(0,0,0,0.15)' }} 
         />
       </div>
 

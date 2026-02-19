@@ -21,6 +21,7 @@ const IdeaInput: React.FC<IdeaInputProps> = ({ value, onChange, placeholder, dis
         value={value}
         onChange={onChange}
         disabled={disabled}
+        style={{ borderColor: '#6BB9FA', borderWidth: '2px', borderStyle: 'solid' }}
       />
     </div>
   );

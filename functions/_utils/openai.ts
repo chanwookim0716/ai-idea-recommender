@@ -87,3 +87,8 @@ export const parseAIResponse = (content: string, numIdeas: number = 3) => {
 
   return finalIdeas.slice(0, numIdeas); // Ensure exact limit
 };
+
+export const parseAIDetailResponse = (content: string) => {
+  const lines = content.split('\n').map(line => line.trim()).filter(line => line !== '');
+  return lines;
+};

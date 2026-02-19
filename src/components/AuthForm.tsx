@@ -61,7 +61,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ show, onHide, isLoginMode: initialI
 
   return (
     <Modal show={show} onHide={onHide} centered>
-      <Modal.Header closeButton style={{ borderColor: '#6BB9FA', borderBottom: '1px solid #6BB9FA' }}>
+      <Modal.Header closeButton={false} style={{ borderColor: '#6BB9FA', borderBottom: '1px solid #6BB9FA' }}>
         <Modal.Title>{isLogin ? '로그인' : '회원가입'}</Modal.Title>
       </Modal.Header>
       <Modal.Body style={{ borderColor: '#6BB9FA' }}>
@@ -104,7 +104,19 @@ const AuthForm: React.FC<AuthFormProps> = ({ show, onHide, isLoginMode: initialI
           </Button>
         </div>
       </Modal.Body>
-      <Modal.Footer style={{ borderColor: '#6BB9FA', borderTop: '1px solid #6BB9FA' }} />
+      <Modal.Footer style={{ borderColor: '#6BB9FA', borderTop: '1px solid #6BB9FA' }}>
+        <Button 
+          variant="outline-secondary" 
+          onClick={onHide}
+          style={{ 
+            borderColor: '#6BB9FA', 
+            color: '#6BB9FA',
+            fontWeight: '600'
+          }}
+        >
+          닫기
+        </Button>
+      </Modal.Footer>
     </Modal>
   );
 };

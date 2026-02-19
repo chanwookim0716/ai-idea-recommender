@@ -1,5 +1,5 @@
 // functions/api/idea-detail.ts
-import { createOpenAIResponse, parseAIResponse } from '../_utils/openai';
+import { createOpenAIResponse, parseAIDetailResponse } from '../_utils/openai';
 
 interface Env {
   OPENAI_API_KEY: string;
@@ -49,7 +49,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       });
     }
 
-    const details = parseAIResponse(data.choices[0].message.content);
+    const details = parseAIDetailResponse(data.choices[0].message.content);
 
     return new Response(JSON.stringify({ details }), {
       status: 200,

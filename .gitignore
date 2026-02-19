@@ -23,6 +23,8 @@ dist-ssr/
 .env
 .env*.local
 
+*.md
+
 # Next.js
 .next/
 out/

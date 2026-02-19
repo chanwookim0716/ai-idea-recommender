@@ -20,11 +20,10 @@ const IdeaCard: React.FC<IdeaCardProps> = React.memo(({ idea, index, onClick, is
   };
 
   return (
-    <div className="card idea-card mb-3" onClick={() => onClick(idea)} style={{ cursor: 'pointer' }}>
+    <div className="card idea-card mb-3" onClick={() => onClick(idea)} style={{ cursor: 'pointer', borderColor: '#6BB9FA', borderWidth: '2px', borderStyle: 'solid' }}>
       <div className="card-body d-flex justify-content-between align-items-center">
         <div>
-          <h5 className="card-title">아이디어 #{index + 1}</h5>
-          <p className="card-text">{idea}</p>
+          <h5 className="card-title mb-0">{idea}</h5>
         </div>
         {onToggleLike && ( // Only render star if onToggleLike prop is provided
           <div onClick={handleStarClick} style={{ cursor: 'pointer' }}>

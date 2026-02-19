@@ -40,9 +40,9 @@ const IdeaDetailModal: React.FC<IdeaDetailModalProps> = ({
   };
 
   return (
-    <Modal show={show} onHide={onHide} size="lg" centered contentClassName="modal-custom-border">
-      <Modal.Header closeButton={false} style={{ borderColor: '#6BB9FA', borderBottom: '1px solid #6BB9FA' }}>
-        <Modal.Title>{ideaTitle}</Modal.Title>
+    <Modal show={show} onHide={onHide} size="lg" centered dialogClassName="modal-custom-border">
+      <Modal.Header closeButton={false} style={{ borderColor: '#6BB9FA', borderBottom: '2px solid #6BB9FA' }}>
+        <Modal.Title style={{ fontWeight: 'bold' }}>{ideaTitle}</Modal.Title>
       </Modal.Header>
       <Modal.Body style={{ borderColor: '#6BB9FA' }}>
         {isLoading && (
@@ -67,7 +67,7 @@ const IdeaDetailModal: React.FC<IdeaDetailModalProps> = ({
           <p className="text-muted">아직 세부 정보가 없습니다.</p>
         )}
       </Modal.Body>
-      <Modal.Footer style={{ borderColor: '#6BB9FA', borderTop: '1px solid #6BB9FA' }}>
+      <Modal.Footer style={{ borderColor: '#6BB9FA', borderTop: '2px solid #6BB9FA' }}>
         <Button 
           variant="outline-primary" 
           onClick={onHide}

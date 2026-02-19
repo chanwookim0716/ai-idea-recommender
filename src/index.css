@@ -95,3 +95,7 @@ h1 {
 .read-the-docs {
   color: #888;
 }
+
+.modal-custom-border .modal-content {
+  border: 2px solid #6BB9FA !important;
+}
